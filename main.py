@@ -1,16 +1,16 @@
-import pygame
 import sys
-
-WIDTH, HEIGHT = 800, 800
-FPS = 60
-
-WHITE = (255, 255, 255)
+import pygame
+from settings import *
+from visualizer import Visualizer
 
 class Window:
   def __init__(self) -> None:
     pygame.init()
 
-    self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    self.visualizer = Visualizer(30, 30)
+  
+    screen_size = (self.visualizer.width, self.visualizer.height)
+    self.screen = pygame.display.set_mode(screen_size)
     pygame.display.set_caption("A*")
 
     self.clock = pygame.time.Clock()
@@ -36,6 +36,8 @@ class Window:
 
   def _draw(self) -> None:
     self.screen.fill(WHITE)
+
+    self.visualizer.draw(self.screen)
 
     pygame.display.flip()
 
