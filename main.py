@@ -31,6 +31,11 @@ class Window:
       if event.type == pygame.QUIT:
         self.is_running = False
 
+    is_left_clicked, _, is_right_clicked = pygame.mouse.get_pressed()
+
+    if is_left_clicked or is_right_clicked:
+      self.visualizer.handle_click(is_left_clicked, is_right_clicked)
+
   def _update(self, dt: float) -> None:
     pass
 

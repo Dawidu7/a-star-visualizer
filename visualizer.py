@@ -26,6 +26,35 @@ class Visualizer:
     self.height = rows * self.tile_size
 
     self.grid = [[Tile(i, j, self.tile_size) for j in range(cols)] for i in range(rows)]
+    self.start_tile: Tile | None = None
+    self.end_tile: Tile | None = None
+
+  def handle_click(self, is_left_clicked: bool, is_right_clicked: bool) -> None:
+    pos = pygame.mouse.get_pos()
+    row = pos[1] // self.tile_size
+    col = pos[0] // self.tile_size
+    selected_tile = self.grid[row][col]
+
+    if is_left_clicked:
+      if selected_tile == self.start_tile or selected_tile == self.end_tile:
+        return
+
+      if not self.start_tile:
+        selected_tile.type = TileType.START
+        self.start_tile = selected_tile
+      elif not self.end_tile:
+        selected_tile.type = TileType.END
+        self.end_tile = selected_tile
+      else:
+        selected_tile.type = TileType.WALL
+
+    elif is_right_clicked:
+      if selected_tile == self.start_tile:
+        self.start_tile = None
+      elif selected_tile == self.end_tile:
+        self.end_tile = None
+
+      selected_tile.type = TileType.EMPTY
 
   def draw(self, screen: pygame.Surface) -> None:
     for row in self.grid:
