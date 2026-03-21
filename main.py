@@ -28,8 +28,13 @@ class Window:
 
   def _handle_events(self) -> None:
     for event in pygame.event.get():
-      if event.type == pygame.QUIT:
-        self.is_running = False
+      match event.type:
+        case pygame.QUIT:
+          self.is_running = False
+        case pygame.KEYDOWN:
+          match event.key:
+            case pygame.K_SPACE:
+              self.visualizer.start()
 
     is_left_clicked, _, is_right_clicked = pygame.mouse.get_pressed()
 

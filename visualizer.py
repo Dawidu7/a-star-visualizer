@@ -1,21 +1,7 @@
 import pygame
 from settings import *
-
-class Tile:
-  def __init__(self, row: int, col: int, tile_size: int) -> None:
-    self.row = row
-    self.col = col
-    self.tile_size = tile_size
-    self._x = col * tile_size
-    self._y = row * tile_size
-    self.type = TileType.EMPTY
-
-  @property
-  def _color(self) -> tuple[int, int, int]:
-    return TILE_COLORS[self.type]
-
-  def draw(self, screen: pygame.Surface) -> None:
-    pygame.draw.rect(screen, self._color, (self._x, self._y, self.tile_size, self.tile_size))
+from tile import Tile
+from pathfinder import AStar
 
 class Visualizer:
   def __init__(self, cols: int, rows: int) -> None:
@@ -28,6 +14,18 @@ class Visualizer:
     self.grid = [[Tile(i, j, self.tile_size) for j in range(cols)] for i in range(rows)]
     self.start_tile: Tile | None = None
     self.end_tile: Tile | None = None
+
+    self.pathfinder = AStar(self.grid)
+
+  def start(self) -> None:
+    if not self.start_tile or not self.end_tile:
+      return
+    
+    start_tile = self.start_tile
+    end_tile = self.end_tile
+    path = self.pathfinder.find_path(start_tile, end_tile)
+
+    print(path)
 
   def handle_click(self, is_left_clicked: bool, is_right_clicked: bool) -> None:
     pos = pygame.mouse.get_pos()
