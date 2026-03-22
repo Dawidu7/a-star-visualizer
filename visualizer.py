@@ -17,13 +17,18 @@ class Visualizer:
 
     self.pathfinder = AStar(self.grid)
 
-  def start(self) -> None:
+  def start(self, screen: pygame.Surface) -> None:
     if not self.start_tile or not self.end_tile:
       return
     
+    def draw():
+      self.draw(screen)
+      pygame.display.update()
+      pygame.time.delay(DRAW_DELAY)
+
     start_tile = self.start_tile
     end_tile = self.end_tile
-    path = self.pathfinder.find_path(start_tile, end_tile)
+    path = self.pathfinder.find_path(start_tile, end_tile, draw)
 
     print(path)
 
