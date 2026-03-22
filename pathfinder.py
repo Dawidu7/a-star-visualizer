@@ -1,8 +1,14 @@
+from abc import ABC, abstractmethod
 from queue import PriorityQueue
 from settings import TileType
 from tile import Tile, TileHistory
 
-class AStar:
+class Pathfinder(ABC):
+  @abstractmethod
+  def find_path(self, grid: list[list[Tile]], start_tile: Tile, end_tile: Tile) -> tuple[list[Tile], TileHistory]:
+    pass
+
+class AStar(Pathfinder):
   def find_path(self, grid: list[list[Tile]], start_tile: Tile, end_tile: Tile) -> tuple[list[Tile], TileHistory]:
     count = 0
     open_queue: PriorityQueue[tuple[float, int, Tile]] = PriorityQueue()
