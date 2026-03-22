@@ -26,6 +26,7 @@ class Visualizer:
     if self.is_animating:
       return
 
+    self._reset_grid()
     start_tile = self.start_tile
     end_tile = self.end_tile
     path, self.history = self.pathfinder.find_path(self.grid, start_tile, end_tile)
@@ -79,3 +80,20 @@ class Visualizer:
 
     for j in range(self.cols):
       pygame.draw.line(screen, BLACK, (j * self.tile_size, 0), (j * self.tile_size, self.height))
+
+  def clear_grid(self) -> None:
+    if self.is_animating:
+      return
+    
+    for row in self.grid:
+      for tile in row:
+        tile.type = TileType.EMPTY
+
+    self.start_tile = None
+    self.end_tile = None
+
+  def _reset_grid(self) -> None:
+    for row in self.grid:
+      for tile in row:
+        if tile.type not in (TileType.EMPTY, TileType.WALL, TileType.START, TileType.END):
+          tile.type = TileType.EMPTY
