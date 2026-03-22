@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from tile import Tile
+from tile import Tile, TileHistory
 from pathfinder import AStar
 
 class Visualizer:
@@ -15,20 +15,21 @@ class Visualizer:
     self.start_tile: Tile | None = None
     self.end_tile: Tile | None = None
 
-    self.pathfinder = AStar(self.grid)
+    self.pathfinder = AStar()
+    self.is_animating = False
+    self.history: TileHistory | None = None
 
-  def start(self, screen: pygame.Surface) -> None:
+  def start(self) -> None:
     if not self.start_tile or not self.end_tile:
       return
     
-    def draw():
-      self.draw(screen)
-      pygame.display.update()
-      pygame.time.delay(DRAW_DELAY)
+    if self.is_animating:
+      return
 
     start_tile = self.start_tile
     end_tile = self.end_tile
-    path = self.pathfinder.find_path(start_tile, end_tile, draw)
+    path, self.history = self.pathfinder.find_path(self.grid, start_tile, end_tile)
+    self.is_animating = True
 
     print(path)
 
@@ -58,6 +59,15 @@ class Visualizer:
         self.end_tile = None
 
       selected_tile.type = TileType.EMPTY
+
+  def update(self) -> None:
+    if not self.history:
+      if self.is_animating:
+        self.is_animating = False
+      return
+    
+    tile, type = self.history.pop(0)
+    tile.type = type
 
   def draw(self, screen: pygame.Surface) -> None:
     for row in self.grid:

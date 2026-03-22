@@ -3,8 +3,6 @@ from enum import Enum
 WIDTH, HEIGHT = 800, 800
 FPS = 60
 
-DRAW_DELAY = 20
-
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
@@ -21,6 +19,8 @@ class TileType(Enum):
   OPEN = 4
   CLOSED = 5
   PATH = 6
+  PATH_START = 7
+  PATH_END = 8
 
 TILE_COLORS = {
   TileType.EMPTY: WHITE,
@@ -29,5 +29,7 @@ TILE_COLORS = {
   TileType.END: PURPLE,
   TileType.OPEN: GREEN,
   TileType.CLOSED: RED,
-  TileType.PATH: BLUE
+  TileType.PATH: BLUE,
+  TileType.PATH_START: BLUE,
+  TileType.PATH_END: BLUE,
 }

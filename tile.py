@@ -38,3 +38,5 @@ class Tile:
 
   def __repr__(self) -> str:
     return f"Tile[{self.row}][{self.col}]"
+  
+TileHistory = list[tuple[Tile, TileType]]

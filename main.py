@@ -18,9 +18,9 @@ class Window:
 
   def run(self) -> None:
     while self.is_running:
-      dt = self.clock.tick(FPS) / 1000
+      self.clock.tick(FPS)
       self._handle_events()
-      self._update(dt)
+      self._update()
       self._draw()
 
     pygame.quit()
@@ -34,15 +34,15 @@ class Window:
         case pygame.KEYDOWN:
           match event.key:
             case pygame.K_SPACE:
-              self.visualizer.start(self.screen)
+              self.visualizer.start()
 
     is_left_clicked, _, is_right_clicked = pygame.mouse.get_pressed()
 
     if is_left_clicked or is_right_clicked:
       self.visualizer.handle_click(is_left_clicked, is_right_clicked)
 
-  def _update(self, dt: float) -> None:
-    pass
+  def _update(self) -> None:
+    self.visualizer.update()
 
   def _draw(self) -> None:
     self.screen.fill(WHITE)
